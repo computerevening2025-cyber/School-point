@@ -1,82 +1,9 @@
-<!DOCTYPE html>
-<html lang="lo">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ເຂົ້າສູ່ລະບົບ - ScoreApp</title>
-    <style>
-        body {
-            font-family: 'Phetsarath OT', sans-serif, Arial;
-            background-color: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 360px;
-            text-align: center;
-        }
-        .login-card h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .btn-login:hover {
-            background-color: #0b5ed7;
-        }
-        .btn-back {
-            display: block;
-            margin-top: 15px;
-            color: #6c757d;
-            text-decoration: none;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
-
 <div class="login-card">
     <h2>🔐 ເຂົ້າສູ່ລະບົບ</h2>
-    
+
     <div class="form-group">
-        <label for="usernameInput">ຊື່ຜູ້ໃຊ້ / ຊື່ຄູ:</label>
-        <input type="text" id="usernameInput" placeholder="ປ້ອນຊື່ຜູ້ໃຊ້ ຫຼື ຊື່ຄູ">
+        <label for="usernameInput">ຊື່ຜູ້ໃຊ້ / ຊື່:</label>
+        <input type="text" id="usernameInput" placeholder="ປ້ອນຊື່ຜູ້ໃຊ້ ຫືຼ ຊື່">
     </div>
 
     <div class="form-group">
@@ -84,14 +11,9 @@
         <input type="password" id="passwordInput" placeholder="ປ້ອນລະຫັດຜ່ານ">
     </div>
 
-    <button class="btn-login" onclick="handleUnifiedLogin()">ເຂົ້າສູ່ລະບົບ</button>
-    <a href="index.html" class="btn-back">⬅️ກວດສອບຄະແນນນັກຮຽນ</a>
+    <button class="btn-login" onclick="login()">ເຂົ້າສູ່ລະບົບ</button>
+    <a href="index.html" class="btn-back">➡️ ກວດສອບຄະແນນນັກຮຽນ</a>
 </div>
 
-<!-- เรียกใช้ไฟล์ script-login.js -->
-<script src="script-login.js"></script>
+<!-- เรียกใช้ไฟล์ script-admin.js ให้ถูกต้อง -->
 <script src="script-admin.js"></script>
-    
-
-</body>
-</html>
