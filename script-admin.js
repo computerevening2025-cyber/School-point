@@ -29,7 +29,7 @@ function checkAdminLogin() {
                 }
             } else {
                 // กรณีใน Firebase ยังไม่ได้ตั้งค่า Admin ไว้ (ใช้ค่าเริ่มต้นชั่วคราว)
-                if (usernameInput === "admin" && passwordInput === "123456") {
+                if (usernameInput === "admin" && passwordInput === "Pms123") {
                     alert("ເຂົ້າສູ່ລະບົບສຳເລັດ (Default)! ");
                     sessionStorage.setItem("isAdminLoggedIn", "true");
                     window.location.href = "admin.html";
