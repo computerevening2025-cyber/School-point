@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ບັນທຶກຄະແນນໃຫ້ນັກຮຽນ (ຄູປະຈຳຊັ້ນ)</title>
+    <style>
+        body { font-family: 'Phetsarath OT', sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2, h3 { color: #333; margin-top: 0; }
+        .info-box { background: #e7f3fe; border-left: 5px solid #2196F3; padding: 10px 15px; margin-bottom: 20px; border-radius: 4px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 15px; }
+        button { cursor: pointer; border: none; border-radius: 5px; padding: 10px 15px; font-weight: bold; font-size: 14px; }
+        .btn-add { background-color: #28a745; color: white; width: 100%; margin-top: 10px; font-size: 16px; }
+        .btn-edit { background-color: #ffc107; color: #333; margin-right: 5px; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn-logout { background-color: #6c757d; color: white; float: right; padding: 6px 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="btn-logout" onclick="logout()">🚪 ອອກຈາກລະບົບ</button>
+    <h2>📝 ລະບົບບັນທຶກຄະແນນນັກຮຽນ</h2>
+
+    <!-- แสดงห้องเรียนที่ครูรับผิดชอบ -->
+    <div class="info-box">
+        <b>ປະຈຳຫ້ອງຮຽນ:</b> <span id="displayClass" style="color: #0d6efd; font-weight: bold;">ກຳລັງໂຫຼດ...</span>
+    </div>
+
+    <!-- ฟอร์มเลือกวิชา และป้อนข้อมูลนักเรียน -->
+    <div class="card">
+        <h3>👤 ປ້ອນຂໍ້ມູນນັກຮຽນ ແລະ ຄະແນນ</h3>
+        <input type="hidden" id="editStudentId">
+
+        <div class="form-group">
+            <label for="subjectSelect">📚 ເລືອກວິຊາຮຽນ:</label>
+            <select id="subjectSelect" onchange="loadStudents()">
+                <option value="ພາສາລາວ">ພາສາລາວ</option>
+                <option value="ວັນນະຄະດີ">ວັນນະຄະດີ</option>
+                <option value="ຄະນິດສາດ">ຄະນິດສາດ</option>
+                <option value="ສຶກສາພົນລະເມືອງ">ສຶກສາພົນລະເມືອງ</option>
+                <option value="ວິທະຍາສາດທຳມະຊາດ">ວິທະຍາສາດທຳມະຊາດ</option>
+                <option value="ພູມສາດ">ພູມສາດ</option>
+                <option value="ປະຫວັດສາດ">ປະຫວັດສາດ</option>
+                <option value="ເຕັກໂນໂລຊີ (ຄອມ)">ເຕັກໂນໂລຊີ (ຄອມ)</option>
+                <option value="ພື້ນຖານວິຊາຊີບ">ພື້ນຖານວິຊາຊີບ</option>
+                <option value="ສິລະປະກຳ">ສິລະປະກຳ</option>
+                <option value="ສິລະປະດົນຕີ">ສິລະປະດົນຕີ</option>
+                <option value="ພາສາອັງກິດ">ພາສາອັງກິດ</option>
+                <option value="ພະລະສຶກສາ">ພະລະສຶກສາ</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>ລະຫັດນັກຮຽນ:</label>
+            <input type="text" id="stdCode" placeholder="ເຊັ່ນ: 6601">
+        </div>
+        <div class="form-group">
+            <label>ຊື່ ແລະ ນາມສະກຸນ:</label>
+            <input type="text" id="stdName" placeholder="ເຊັ່ນ: ທ້າວ ສົມຊາຍ">
+        </div>
+        <div class="form-group">
+            <label>ຄະແນນທີ່ໄດ້:</label>
+            <input type="number" id="stdScore" placeholder="ເຊັ່ນ: 85" min="0" max="100">
+        </div>
+
+        <button class="btn-add" id="btnSaveStudent" onclick="saveStudent()">+ ບັນທຶກຂໍ້ມູນ</button>
+    </div>
+
+    <!-- ตารางแสดงคะแนนแยกตามวิชา -->
+    <div class="card">
+        <h3>📋 ລາຍຊື່ນັກຮຽນ ແລະ ຄະແນນ (<span id="currentSubjectTitle">ພາສາລາວ</span>)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ລະຫັດ</th>
+                    <th>ຊື່ ແລະ ນາມສະກຸນ</th>
+                    <th>ຄະແນນ</th>
+                    <th style="width: 130px;">ຈັດການ</th>
+                </tr>
+            </thead>
+            <tbody id="studentList">
+                <!-- ข้อมูลคะแนนจะโหลดลงตรงนี้ -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="script-teacher-entry.js"></script>
+
+</body>
+</html>
