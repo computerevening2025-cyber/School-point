@@ -1,45 +1,47 @@
-// ⚠️ เปลี่ยน URL Firebase เป็นของคุณครูนะครับ
-const FIREBASE_URL = "https://student-point2026-2027-default-rtdb.firebaseio.com/";
+// 1. ตรวจสอบให้แน่ใจว่า FIREBASE_URL ตรงกับใน Firebase Console ของคุณครู
+const FIREBASE_URL = "https://student-point2026-2027-default-rtdb.firebaseio.com";
 
-function checkAdminLogin() {
-    const usernameInput = document.getElementById('adminUsername').value.trim();
-    const passwordInput = document.getElementById('adminPassword').value.trim();
+function login() {
+    const usernameInput = document.getElementById("username").value.trim();
+    const passwordInput = document.getElementById("password").value.trim();
 
     if (!usernameInput || !passwordInput) {
         alert("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ ແລະ ລະຫັດຜ່ານ!");
         return;
     }
 
-    // ดึงข้อมูล Admin จาก Firebase Node 'admin'
-    fetch(`${FIREBASE_URL}/admin.json`)
+    // ล็อกอินแบบทางด่วน (Bypass) + เช็กจาก Firebase
+    fetch(${FIREBASE_URL}/admin.json)
         .then(res => res.json())
         .then(adminData => {
-            if (adminData) {
-                // เช็กว่า Username และ Password ตรงกับในระบบหรือไม่
-                if (usernameInput === adminData.username && passwordInput === adminData.password) {
-                    alert("ເຂົ້າສູ່ລະບົບສຳເລັດ!");
-                    
-                    // บันทึกสถานะว่าล็อกอินแล้ว (Session)
-                    sessionStorage.setItem("isAdminLoggedIn", "true");
-                    
-                    // เด้งไปหน้าแผงควบคุม admin.html
-                    window.location.href = "admin.html";
-                } else {
-                    alert("ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ!");
-                }
+            let isSuccess = false;
+
+            // เช็กข้อมูลจาก Firebase (ถ้ามี)
+            if (adminData && adminData.username === usernameInput && adminData.password === passwordInput) {
+                isSuccess = true;
+            } 
+            // รหัสสำรองเผื่อ Firebase ยังดึงค่าไม่ได้ (ยอมรับทั้ง P ตัวใหญ่ และ p ตัวเล็ก)
+            else if (usernameInput === "admin" && (passwordInput === "Pms123" || passwordInput === "pms123")) {
+                isSuccess = true;
+            }
+
+            if (isSuccess) {
+                alert("ເຂົ້າສູ່ລະບົບສຳເລັດ!");
+                sessionStorage.setItem("isAdminLoggedIn", "true");
+                window.location.href = "admin.html";
             } else {
-                // กรณีใน Firebase ยังไม่ได้ตั้งค่า Admin ไว้ (ใช้ค่าเริ่มต้นชั่วคราว)
-                if (usernameInput === "admin" && passwordInput === "Pms123") {
-                    alert("ເຂົ້າສູ່ລະບົບສຳເລັດ (Default)! ");
-                    sessionStorage.setItem("isAdminLoggedIn", "true");
-                    window.location.href = "admin.html";
-                } else {
-                    alert("ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ!");
-                }
+                alert("ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ!");
             }
         })
         .catch(err => {
-            console.error("Login Error:", err);
-            alert("ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອມຕໍ່!");
+            console.error("Login error:", err);
+            // กรณีเน็ตหลุด/เชื่อมต่อไม่ได้ ให้เข้าด้วยรหัสสำรองได้ทันที
+            if (usernameInput === "admin" && (passwordInput === "Pms123" || passwordInput === "pms123")) {
+                alert("ເຂົ້າສູ່ລະບົບສຳເລັດ!");
+                sessionStorage.setItem("isAdminLoggedIn", "true");
+                window.location.href = "admin.html";
+            } else {
+                alert("ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ!");
+            }
         });
 }
